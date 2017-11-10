@@ -1,5 +1,7 @@
 __pycache__
-*.pyc
-*.mp3
-*.wav
 config.py
+*.pyc
+
+*.mp3
+*.mp3.asd
+*.wav
