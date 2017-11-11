@@ -21,5 +21,6 @@ def load_songs():
 			key=song['Key']
 		)
 		songs.append(new_song)
+		# new_song.write_audio_segment()
 
 	return songs
