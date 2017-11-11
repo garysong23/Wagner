@@ -1,13 +1,10 @@
-from pydub import AudioSegment
-from amen.audio import Audio
+'''
+Converts beat numbers range to timestamp range.
+'''
 
-def parse_segment(file_path, mix_in, mix_out, mix_len):
-  audio_beats = Audio(file_path)
-  audio_times = AudioSegment.from_file(file_path)
-
-  begin_time = _segment_begin_time(mix_in, audio_beats)
-  end_time = _segment_end_time(mix_out + mix_len, audio_beats)
-
+def parse_segment(audio_beats, audio_times, begin, end):
+  begin_time = _segment_begin_time(begin, audio_beats)
+  end_time = _segment_end_time(end, audio_beats)
   return audio_times[begin_time: end_time]
 
 def _segment_begin_time(b, audio_beats):

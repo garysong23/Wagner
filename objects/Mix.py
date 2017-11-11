@@ -3,9 +3,9 @@ class Mix:
     self.mix = self._mix_songs(songs)
 
   def _mix_songs(self, songs):
-    mix = songs[0].audio_segment
+    mix = songs[0].audio_segment()
     for i in range(1, len(songs)):
-      new_seg = songs[i].audio_segment
+      new_seg = songs[i].audio_segment()
       mix = mix.append(new_seg, crossfade=15000)
     return mix
 
