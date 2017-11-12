@@ -18,7 +18,8 @@ class Mashability:
     if (len(songs) < 2): return pair_mashability
 
     for i in range(len(songs)):
-      for j in range(i+1, len(songs)):
+      for j in range(len(songs)):
+        if (i == j): continue
         s1, s2 = songs[i], songs[j]
         pair_mashability[(s1, s2)] = self._get_mashability(s1, s2)
 
@@ -39,7 +40,7 @@ class Mashability:
     chroma1 = self._chroma_from_file(f1)
     chroma2 = self._chroma_from_file(f2)
 
-    visualize.chroma_comparison(song1.name, song2.name, chroma1, chroma2)
+    # visualize.chroma_comparison(song1.name, song2.name, chroma1, chroma2)
 
     orthogonal_arr = []
     for i in range(min(chroma1.shape[1],chroma2.shape[1])):

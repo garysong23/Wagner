@@ -1,7 +1,7 @@
 import json
 from objects.Song import Song
 
-name = 'two_songs_modified'
+name = 'song_data'
 DATA_SET = './data/json/' + name + '.json'
 
 def load_songs():
