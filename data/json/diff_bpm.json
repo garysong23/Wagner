@@ -1,0 +1,22 @@
+[
+	{
+		"Name" : "Outside",
+		"File" : "Outside.mp3",
+		"MixIn" : 32,
+		"MixOut" : 96,
+		"Unary" : 130,
+		"SongId" : 2,
+		"BPM" : 135,
+		"Key" : "c#"
+ 	},
+	{
+		"Name" : "Safe and Sound",
+		"File" : "SafeSound.mp3",
+		"MixIn" : 0,
+		"MixOut" : 64,
+		"Unary" : 150,
+		"SongId" : 4,
+		"BPM" : 122,
+		"Key" : "C"
+	}
+]

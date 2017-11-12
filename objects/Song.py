@@ -1,6 +1,7 @@
 from pydub import AudioSegment
 from amen.audio import Audio
 from objects.song_helpers.parse_segment import parse_segment
+import librosa
 
 class Song:
 	def __init__(self, name, fname, mix_in, mix_out, unary_factor, song_id, bpm, key):
@@ -15,6 +16,11 @@ class Song:
 		file_path = './data/mp3/' + fname
 		self._audio_beats = Audio(file_path)
 		self._audio_times = AudioSegment.from_file(file_path)
+
+		# y, sr = librosa.load(file_path)
+		# _, beat_frames = librosa.beat.beat_track(y=y, sr=sr, bpm=self.bpm)
+		#
+		# self.beat_frames = beat_frames
 
 		# self.file = fname
 		# self.mix_in = mix_in
