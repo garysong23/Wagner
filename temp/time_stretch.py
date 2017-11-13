@@ -30,6 +30,9 @@ tempo_y, beats_y = librosa.beat.beat_track(y=y_percussive, sr=sr_y, trim=True)
 tempo_x, beats_x = librosa.beat.beat_track(y=x_percussive, sr=sr_x, trim=True)
 
 #adjust x to be the same tempo as y
+print(tempo_y)
+print(tempo_x)
+print(tempo_x/tempo_y)
 ym = librosa.effects.time_stretch(y, tempo_x/tempo_y)
 
 #remeasure tempo of y_matched
