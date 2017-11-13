@@ -7,7 +7,8 @@ from pprint import pprint
 
 def main():
 	songs = load_songs()
-	playlist = Playlist(songs)
+	# sf.write('test.wav', audio_segment, 44100)
+	# playlist = Playlist(songs)
 
 	# mix.write_mix()
 
