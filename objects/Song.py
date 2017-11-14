@@ -1,44 +1,42 @@
-from pydub import AudioSegment
-from amen.audio import Audio
-from objects.song_helpers.parse_segment import parse_segment
 import librosa
 
 SR = 44100
 
 class Song:
-	def __init__(self, name, fname, mix_in, mix_out, unary_factor, song_id, bpm, key):
-		print('Loading: ' + fname)
+	def __init__(self, fname, mix_in, mix_out, bpm):
 		self.bpm = bpm
-		self.name = name
+		self.name = fname
 
 		self._mix_in = mix_in
 		self._mix_out = mix_out
 		self._mix_len = 32
 
 		file_path = './data/mp3/' + fname
-		self._lib_audio, _ = librosa.load(file_path, sr=SR)
-		_, self._lib_beats = librosa.beat.beat_track(y=self._lib_audio, sr=SR)
+		self.raw_audio, _ = librosa.load(file_path, sr=SR)
+		_, self._beats = librosa.beat.beat_track(y=self.raw_audio, sr=SR, bpm=bpm)
 
-	def audio_segment(self):
-		begin, end = self._mix_in, self._mix_out + self._mix_len
-		sample = librosa.frames_to_samples(self._lib_beats[begin:end])
-		return self._lib_audio[sample[0]: sample[-1]]
+	def body_audio(self):
+		begin, end = self._mix_in + self._mix_len, self._mix_out
+		samples = librosa.frames_to_samples(self._beats[begin: end])
+		return self.raw_audio[samples[0]: samples[-1]]
 
-	def trans_in_segment(self):
+	def trans_in_audio(self):
 		begin, end = self._mix_in, self._mix_in + self._mix_len
-		segment = parse_segment(self._audio_beats, self._audio_times, begin, end)
-		return segment
+		samples = librosa.frames_to_samples(self._beats[begin: end])
+		return self.raw_audio[samples[0]: samples[-1]]
 
-	def trans_out_segment(self):
+	def trans_out_audio(self):
 		begin, end = self._mix_out, self._mix_out + self._mix_len
-		segment = parse_segment(self._audio_beats, self._audio_times, begin, end)
-		return segment
+		samples = librosa.frames_to_samples(self._beats[begin: end])
+		return self.raw_audio[samples[0]: samples[-1]]
 
-	def write_audio_segment(self, file_path=None):
-		print('Writing: ' + self.name)
-		if not file_path:
-			file_path = './output/' + self.name + '.mp3'
-		self.audio_segment.export(file_path, format='mp3')
+	def trans_in_beats(self):
+		begin, end = self._mix_in, self._mix_in + self._mix_len
+		return self._beats[begin: end]
+
+	def trans_out_beats(self):
+		begin, end = self._mix_out, self._mix_out + self._mix_len
+		return self._beats[begin: end]
 
 	def __repr__(self):
 		return self.name

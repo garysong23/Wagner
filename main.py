@@ -6,6 +6,10 @@ from pprint import pprint
 name = 'seq'
 DATA_SET = './data/json/' + name + '.json'
 
+def main():
+	songs = load_songs()
+	mix = Mix(songs)
+
 def load_songs():
 	with open(DATA_SET) as data_file:
 		data = json.load(data_file)
@@ -20,14 +24,6 @@ def load_songs():
 		)
 		songs.append(new_song)
 	return songs
-
-def main():
-	songs = load_songs()
-	mix = Mix(songs)
-	# sf.write('test.wav', audio_segment, 44100)
-	# playlist = Playlist(songs)
-
-	# mix.write_mix()
 
 if __name__ == '__main__':
 	main()

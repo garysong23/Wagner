@@ -11,7 +11,8 @@ class Mix:
     print('Mix sequence: ')
     for i in range(len(songs)):
       print(songs[i].name)
-    self.mix = self._mix_songs(songs)
+
+    self.mix_path = self._mix_songs(songs)
 
   def _mix_songs(self, songs):
     cur_bpm = songs[0].bpm
@@ -20,7 +21,9 @@ class Mix:
       out_song, in_song = songs[i], songs[i+1]
       trans_audio = self._transition_segment(out_song, in_song)
       mix_full = np.concatenate([mix_full, trans_audio, in_song.body_audio()])
-    librosa.output.write_wav('./output/full.wav', mix_full, sr)
+    out_path = './output/full.wav'
+    librosa.output.write_wav(out_path, mix_full, sr)
+    return out_path
 
   def _transition_segment(self, out_song, in_song):
     if (out_song.bpm == in_song.bpm):

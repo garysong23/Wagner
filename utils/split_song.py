@@ -1,8 +1,20 @@
 import json
 import librosa
 
-SR, MIX_LEN = 44100, 33
+SR, MIX_LEN = 44100, 32
 DATA_SET = './data/json/diff_bpm.json'
+
+def main():
+  with open(DATA_SET) as data_file:
+    data = json.load(data_file)
+
+  songs = []
+  for song in data:
+    mix_in = song['MixIn']
+    mix_out = song['MixOut']
+    file_name = song['File']
+    bpm = song['BPM']
+    split_song(mix_in, mix_out, bpm, file_name)
 
 def split_song(mix_in, mix_out, bpm, file_name):
   file_path = './data/mp3/' + file_name
@@ -22,13 +34,5 @@ def split_song(mix_in, mix_out, bpm, file_name):
   librosa.output.write_wav('./data/chopped/trans_in/'+file_name+'.wav', in_audio, SR)
   librosa.output.write_wav('./data/chopped/trans_out/'+file_name+'.wav', out_audio, SR)
 
-with open(DATA_SET) as data_file:
-  data = json.load(data_file)
-
-songs = []
-for song in data:
-  mix_in = song['MixIn']
-  mix_out = song['MixOut']
-  file_name = song['File']
-  bpm = song['BPM']
-  split_song(mix_in, mix_out, bpm, file_name)
+if __name__ == '__main__':
+	main()
