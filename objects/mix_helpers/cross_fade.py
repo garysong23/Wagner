@@ -1,5 +1,6 @@
 from pydub import AudioSegment
 
+# Saves a transition audio file using linear crossfade
 def crossfade_files(trans_out_path, trans_in_path):
   audio_out = AudioSegment.from_file(trans_out_path)
   audio_in = AudioSegment.from_file(trans_in_path)

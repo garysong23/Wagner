@@ -1,17 +1,30 @@
+'''
+Returns two transition segments by performing the following
+1. Cut songs at specific time points
+  Out song: mix_out -> mix_out + mix_len
+  In song: mix_in -> mix_in + mix_len
+2. Perform mutation if necessary
+  Time stretching if songs have different BPMs
+3. Write raw audio files to temp folder
+4. Return path for transition segments
+'''
+
 import librosa
 import numpy as np
 import pyrubberband as pyrb
 
-from pydub import AudioSegment
-
 out_path, in_path = './output/temp/out.wav', './output/temp/in.wav'
 
+# Same BPM transitions - Just write raw audio for crossfading
 def normal(song_out, song_in, sr):
   librosa.output.write_wav(out_path, song_out.trans_out_audio(), sr)
   librosa.output.write_wav(in_path, song_in.trans_in_audio(), sr)
   return (out_path, in_path)
 
+# Different BPM transitions - linear time stretch at each beat
+# Done to prevent audio distortion
 def stretch(song_out, song_in, mix_len, sr):
+  # linear BPM increase at each beat
   incre_diff = (song_in.bpm - song_out.bpm) / mix_len
   incre_bpm = [song_out.bpm + (incre_diff * i) for i in range(1,mix_len+1)]
 
@@ -30,6 +43,7 @@ def stretch(song_out, song_in, mix_len, sr):
 def _stretched_audio_by_incre_bpm(song, beats, incre_bpm, sr):
   samples = np.array([])
   for i in range(len(beats)-1):
+    # strech all samples between beat i to the begining of the next beat
     sample = librosa.frames_to_samples(beats[i:i+2])
     y_raw = song.raw_audio[sample[0]:sample[1]]
 

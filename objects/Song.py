@@ -1,3 +1,8 @@
+'''
+Song is divided into three sections. IN -> BODY -> OUT.
+Sections IN and OUT are areas with overlap with other songs.
+Length of these sections are determined by mix_len.
+'''
 import librosa
 
 SR = 44100
