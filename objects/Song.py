@@ -3,6 +3,8 @@ from amen.audio import Audio
 from objects.song_helpers.parse_segment import parse_segment
 import librosa
 
+SR = 44100
+
 class Song:
 	def __init__(self, name, fname, mix_in, mix_out, unary_factor, song_id, bpm, key):
 		print('Loading: ' + fname)
@@ -14,27 +16,13 @@ class Song:
 		self._mix_len = 32
 
 		file_path = './data/mp3/' + fname
-		self._audio_beats = Audio(file_path)
-		self._audio_times = AudioSegment.from_file(file_path)
-
-		# y, sr = librosa.load(file_path)
-		# _, beat_frames = librosa.beat.beat_track(y=y, sr=sr, bpm=self.bpm)
-		#
-		# self.beat_frames = beat_frames
-
-		# self.file = fname
-		# self.mix_in = mix_in
-		# self.mix_out = mix_out
-		# self.unary_factor = unary_factor
-		# self.song_id = song_id
-		# self.key = key
-		# self.audio_beats = Audio('./data/mp3/' + fname)
-		# self.audio_times = AudioSegment.from_file('./data/mp3/' + fname)
+		self._lib_audio, _ = librosa.load(file_path, sr=SR)
+		_, self._lib_beats = librosa.beat.beat_track(y=self._lib_audio, sr=SR)
 
 	def audio_segment(self):
 		begin, end = self._mix_in, self._mix_out + self._mix_len
-		segment = parse_segment(self._audio_beats, self._audio_times, begin, end)
-		return segment
+		sample = librosa.frames_to_samples(self._lib_beats[begin:end])
+		return self._lib_audio[sample[0]: sample[-1]]
 
 	def trans_in_segment(self):
 		begin, end = self._mix_in, self._mix_in + self._mix_len

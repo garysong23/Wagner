@@ -1,18 +1,33 @@
-from objects.mix_helpers.time_stretch import time_stretch
+import numpy as np
+import librosa
+import objects.mix_helpers.transition as transition
+from objects.mix_helpers.cross_fade import crossfade_files
+
+sr = 44100
+mix_len = 32
 
 class Mix:
   def __init__(self, songs):
+    print('Mix sequence: ')
+    for i in range(len(songs)):
+      print(songs[i].name)
     self.mix = self._mix_songs(songs)
 
   def _mix_songs(self, songs):
     cur_bpm = songs[0].bpm
-    mix = songs[0].audio_segment()
-    for i in range(1, len(songs)):
-      if (cur_bpm == songs[i].bpm):
-        new_seg = songs[i].audio_segment()
-      mix = mix.append(new_seg, crossfade=15000)
-    return mix
+    mix_full = np.concatenate([songs[0].trans_in_audio(), songs[0].body_audio()])
+    for i in range(0, len(songs)-1):
+      out_song, in_song = songs[i], songs[i+1]
+      trans_audio = self._transition_segment(out_song, in_song)
+      mix_full = np.concatenate([mix_full, trans_audio, in_song.body_audio()])
+    librosa.output.write_wav('./output/full.wav', mix_full, sr)
 
-  def write_mix(self):
-    print('Writing Mix')
-    self.mix.export('./output/mix.mp3', format='mp3')
+  def _transition_segment(self, out_song, in_song):
+    if (out_song.bpm == in_song.bpm):
+      out_path, in_path = transition.normal(out_song, in_song, sr)
+    else:
+      out_path, in_path = transition.stretch(out_song, in_song, mix_len, sr)
+
+    trans_path = crossfade_files(out_path, in_path)
+    trans, _ = librosa.load(trans_path, sr=sr)
+    return trans

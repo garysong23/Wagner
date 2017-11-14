@@ -1,0 +1,32 @@
+[
+  {
+    "Name" : "Safe and Sound",
+    "File" : "SafeSound.mp3",
+    "MixIn" : 0,
+    "MixOut" : 64,
+    "Unary" : 150,
+    "SongId" : 4,
+    "BPM" : 122,
+    "Key" : "C"
+  },
+	{
+		"Name" : "Jealous",
+		"File" : "Jealous.mp3",
+		"MixIn" : 64,
+		"MixOut" : 128,
+		"Unary" : 150,
+		"SongId" : 1,
+		"BPM" : 128,
+		"Key" : "f"
+	},
+	{
+		"Name" : "Uptown Funk",
+		"File" : "UptownFunk.mp3",
+		"MixIn" : 64,
+		"MixOut" : 128,
+		"Unary" : 430,
+		"SongId" : 8,
+		"BPM" : 128,
+		"Key" : "F"
+	}
+]

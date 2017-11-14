@@ -5,3 +5,4 @@ config.py
 *.mp3
 *.mp3.asd
 *.wav
+*.wav.asd
