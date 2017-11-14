@@ -1,12 +1,9 @@
 '''
 Mix object creates a mix from an array of songs.
-Songs transition by crossfading song_out with song_in.
-Songs with different BPMs are time stretched to sync beats.
 '''
 import numpy as np
 import librosa
-import objects.mix_helpers.transition as transition
-from objects.mix_helpers.cross_fade import crossfade_files
+from objects.Transition import Transition
 
 sr = 44100
 mix_len = 32
@@ -30,19 +27,9 @@ class Mix:
 
     for i in range(0, len(songs)-1):
       out_song, in_song = songs[i], songs[i+1]
-      trans_audio = self._transition_segment(out_song, in_song)
+      transition = Transition(out_song, in_song, mix_len)
+      trans_audio = transition.merged_audio
       mix_full = np.concatenate([mix_full, trans_audio, in_song.body_audio()])
     out_path = './output/full.wav'
     librosa.output.write_wav(out_path, mix_full, sr)
     return out_path
-
-  # Returns the raw audio of the transition segment
-  def _transition_segment(self, out_song, in_song):
-    if (out_song.bpm == in_song.bpm):
-      out_path, in_path = transition.normal(out_song, in_song, sr)
-    else:
-      out_path, in_path = transition.stretch(out_song, in_song, mix_len, sr)
-
-    trans_path = crossfade_files(out_path, in_path)
-    trans, _ = librosa.load(trans_path, sr=sr)
-    return trans
