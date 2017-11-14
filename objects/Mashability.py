@@ -9,22 +9,23 @@ from pprint import pprint
 
 from objects.Transition import Transition
 import objects.mashability_helpers.visualize as visualize
+from objects.mashability_helpers.sequence import sequence_for_mash_index
 
 class Mashability:
   def __init__(self, songs):
-    self.index = self._generate_mashability_index(songs)
+    self.mash_index = self._generate_mashability_index(songs)
+    self.seq, val = sequence_for_mash_index(songs, self.mash_index)
+    print('Selected sequence:')
+    pprint(self.seq)
 
   def _generate_mashability_index(self, songs):
     pair_mashability = {}
     if (len(songs) < 2): return pair_mashability
-
     for i in range(len(songs)):
       for j in range(len(songs)):
         if (i == j): continue
         s1, s2 = songs[i], songs[j]
         pair_mashability[(s1, s2)] = self._get_mashability(s1, s2)
-
-    pprint(pair_mashability)
     return pair_mashability
 
   # Analysis done using cosine matrix similarity

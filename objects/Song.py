@@ -44,4 +44,4 @@ class Song:
 		return self._beats[begin: end]
 
 	def __repr__(self):
-		return self.name
+		return self.name.split('.')[0]
