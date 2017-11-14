@@ -1,14 +1,16 @@
 import json
 from objects.Mix import Mix
+from objects.Mashability import Mashability
 from objects.Song import Song
 from pprint import pprint
 
-name = 'seq'
+name = 'full'
 DATA_SET = './data/json/' + name + '.json'
 
 def main():
 	songs = load_songs()
-	mix = Mix(songs)
+	# mix = Mix(songs)
+	mashability = Mashability(songs)
 
 def load_songs():
 	with open(DATA_SET) as data_file:

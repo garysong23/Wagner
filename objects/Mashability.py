@@ -7,11 +7,12 @@ import numpy as np
 import scipy.spatial.distance as dst
 from pprint import pprint
 
+from objects.Transition import Transition
 import objects.mashability_helpers.visualize as visualize
 
 class Mashability:
   def __init__(self, songs):
-    mashability_index = self._generate_mashability_index(songs)
+    self.index = self._generate_mashability_index(songs)
 
   def _generate_mashability_index(self, songs):
     pair_mashability = {}
@@ -26,19 +27,18 @@ class Mashability:
     pprint(pair_mashability)
     return pair_mashability
 
-  # analysis done using cosine matrix similarity
-  # and FFT semitone bin approximation matrices
+  # Analysis done using cosine matrix similarity
+  #   and FFT semitone bin approximation matrices
   def _get_mashability(self, song1, song2):
     print('Mashability between: ' + song1.name + ' - ' + song2.name)
     bpm_diff = abs(song1.bpm - song2.bpm)
-  	# don't make transition if tempo difference > 30
+  	# Don't make transition if tempo difference > 30
     if (bpm_diff > 30): return 1
 
-    f1, f2 = './output/temp/temp1.mp3', './output/temp/temp2.mp3'
-    song1.trans_out_segment().export(f1, format='mp3')
-    song2.trans_in_segment().export(f2, format='mp3')
-    chroma1 = self._chroma_from_file(f1)
-    chroma2 = self._chroma_from_file(f2)
+    mix_len = 32
+    transition = Transition(song1, song2, mix_len)
+    chroma1 = self._chroma_from_file(transition.out_path)
+    chroma2 = self._chroma_from_file(transition.in_path)
 
     # visualize.chroma_comparison(song1.name, song2.name, chroma1, chroma2)
 

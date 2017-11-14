@@ -1,3 +1,8 @@
+'''
+Split audio file into three chunks based on provided DATA_SET
+  trans_in | body | trans_out
+data saved at ./data/chopped/
+'''
 import json
 import librosa
 
