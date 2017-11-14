@@ -14,7 +14,7 @@ from objects.mashability_helpers.sequence import sequence_for_mash_index
 class Mashability:
   def __init__(self, songs):
     self.mash_index = self._generate_mashability_index(songs)
-    self.seq, val = sequence_for_mash_index(songs, self.mash_index)
+    self.seq, self.val = sequence_for_mash_index(songs, self.mash_index)
     print('Selected sequence:')
     pprint(self.seq)
 

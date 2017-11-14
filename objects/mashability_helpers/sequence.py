@@ -2,7 +2,7 @@
 Generate sequence of songs based on the mash_index for each transition.
 Minimizing for the lowest total mash value.
 
-Current solution is implemented using brute force.
+Current solution is implemented using brute force. O(n^n).
 Generating all possible sequences.
 Better solution should use techniques from the travelling salesman problem.
 '''
