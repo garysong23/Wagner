@@ -8,4 +8,4 @@ consumer = KafkaConsumer('Wagner')
 for msg in consumer:
   val = msg.value.decode()
   audio_controller.on_signal_input(val)
-  print('[SignalConsumer] Signal -', val)
+  print('[SignalConsumer] - Signal:', val)
