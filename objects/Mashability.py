@@ -41,7 +41,7 @@ class Mashability:
     chroma1 = self._chroma_from_file(transition.out_path)
     chroma2 = self._chroma_from_file(transition.in_path)
 
-    # visualize.chroma_comparison(song1.name, song2.name, chroma1, chroma2)
+    visualize.chroma_comparison(song1.name, song2.name, chroma1, chroma2)
 
     orthogonal_arr = []
     for i in range(min(chroma1.shape[1],chroma2.shape[1])):

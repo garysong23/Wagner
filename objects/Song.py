@@ -43,5 +43,8 @@ class Song:
 		begin, end = self._mix_out, self._mix_out + self._mix_len
 		return self._beats[begin: end]
 
+	def write_song(self, name):
+		librosa.output.write_wav('./output/'+name, self.raw_audio, SR)
+
 	def __repr__(self):
 		return self.name.split('.')[0]
