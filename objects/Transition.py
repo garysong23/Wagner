@@ -27,5 +27,5 @@ class Transition:
     return crossfade_files(out_path, in_path)
 
   def _merged_segment_audio(self, merged_path):
-    trans, _ = librosa.load(merged_path, sr=SR)
+    trans, _ = librosa.load(merged_path, sr=SR, mono=False)
     return trans

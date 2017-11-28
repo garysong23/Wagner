@@ -4,7 +4,7 @@ from objects.Song import Song
 from objects.Mashability import Mashability
 from pprint import pprint
 
-name = 'one_song'
+name = 'full'
 DATA_SET = './data/json/' + name + '.json'
 
 def load_songs():
@@ -24,9 +24,8 @@ def load_songs():
 
 def main():
 	songs = load_songs()
-	songs[0].write_song('TEMP.wav')
-	# mash_seq = Mashability(songs).seq
-	# mix = Mix(mash_seq)
+	mash_seq = Mashability(songs).seq
+	mix = Mix(songs)
 
 if __name__ == '__main__':
 	main()

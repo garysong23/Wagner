@@ -41,14 +41,16 @@ def stretch(song_out, song_in, mix_len, sr):
   return (out_path, in_path)
 
 def _stretched_audio_by_incre_bpm(song, beats, incre_bpm, sr):
-  samples = np.array([])
+  samples = np.array([]).reshape(2,0)
   for i in range(len(beats)-1):
     # strech all samples between beat i to the begining of the next beat
     sample = librosa.frames_to_samples(beats[i:i+2])
-    y_raw = song.raw_audio[sample[0]:sample[1]]
+    y_raw = song.raw_audio_duo[:, sample[0]:sample[1]]
 
     stretch_ratio = incre_bpm[i] / song.bpm
-    y_stretch = pyrb.time_stretch(y_raw, sr, stretch_ratio)
-    samples = np.concatenate([samples, y_stretch])
+    # transpose here twice because pyrb takes (n,2) while librosa takes (2,n)
+    t_y_raw = y_raw.transpose()
+    t_y_stretch = pyrb.time_stretch(t_y_raw, sr, stretch_ratio)
+    samples = np.concatenate([samples, t_y_stretch.transpose()], axis=1)
 
   return samples
