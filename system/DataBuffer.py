@@ -2,8 +2,6 @@ import threading
 import time
 import sys
 
-import pygame
-
 BUFFER_CLEAR_SPEED = 500
 
 class DataBuffer:

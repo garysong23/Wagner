@@ -7,7 +7,7 @@ SR = 44100
 
 class AudioStream:
   def __init__(self):
-    self.cur_audio = []
+    self._audio_buffer = None
     file_path = './data/wav/out.wav'
     self.audio, _ = librosa.load(file_path, sr=SR, mono=True)
 
@@ -19,6 +19,13 @@ class AudioStream:
       output=True,
       stream_callback=self._stream_callback,
     )
+
+  def on_signal_input(self, msg):
+    if (msg == 'stop') or (msg == 'exit'):
+      print("Terminating: I'll be back")
+      self.stop_stream()
+      sys.exit()
+    self._audio_buffer = msg
 
   def _stream_callback(self, in_data, frame_count, time_info, status):
     data = self.audio[:frame_count]

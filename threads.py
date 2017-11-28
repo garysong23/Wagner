@@ -1,15 +1,13 @@
 import time
-from system.DataBuffer import DataBuffer
-from system.DataStream import DataStream
+from system.DataPublisher import DataPublisher
 from system.AudioStream import AudioStream
 
-data_stream = DataStream()
-data_buffer = DataBuffer()
-data_stream.subscribe(data_buffer.on_input)
+data_publisher = DataPublisher()
+audio_stream = AudioStream()
+data_publisher.subscribe(audio_stream.on_input)
 
-stream = AudioStream()
-stream.start_stream()
+audio_stream.start_stream()
 
 print('[Threads] - Waiting for user input')
 while True:
-  data_stream.broadcast(input())
+  data_publisher.broadcast(input())

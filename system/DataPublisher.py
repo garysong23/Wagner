@@ -1,4 +1,4 @@
-class DataStream:
+class DataPublisher:
   def __init__(self):
     self.observers = []
 
