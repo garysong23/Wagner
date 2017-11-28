@@ -1,7 +1,7 @@
 import json
-from objects.Mix import Mix
-from objects.Song import Song
-from objects.Mashability import Mashability
+from audio.Mix import Mix
+from audio.Song import Song
+from audio.Mashability import Mashability
 from pprint import pprint
 
 name = 'full'

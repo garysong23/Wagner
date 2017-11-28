@@ -7,9 +7,9 @@ import numpy as np
 import scipy.spatial.distance as dst
 from pprint import pprint
 
-from objects.Transition import Transition
-import objects.mashability_helpers.visualize as visualize
-from objects.mashability_helpers.sequence import sequence_for_mash_index
+from audio.Transition import Transition
+import audio.mashability_helpers.visualize as visualize
+from audio.mashability_helpers.sequence import sequence_for_mash_index
 
 class Mashability:
   def __init__(self, songs):

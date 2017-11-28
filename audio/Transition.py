@@ -3,8 +3,8 @@ Songs transition by crossfading song_out with song_in.
 Songs with different BPMs are time stretched to sync beats.
 '''
 import librosa
-import objects.transition_helpers.segment as segment
-from objects.transition_helpers.cross_fade import crossfade_files
+import audio.transition_helpers.segment as segment
+from audio.transition_helpers.cross_fade import crossfade_files
 
 SR = 44100
 

@@ -1,4 +1,4 @@
-from objects.Mashability import Mashability
+from audio.Mashability import Mashability
 
 class Playlist:
   def __init__(self, songs):

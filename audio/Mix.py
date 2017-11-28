@@ -3,7 +3,7 @@ Mix object creates a mix from an array of songs.
 '''
 import numpy as np
 import librosa
-from objects.Transition import Transition
+from audio.Transition import Transition
 
 sr = 44100
 mix_len = 32
