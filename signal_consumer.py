@@ -1,11 +1,11 @@
 from kafka import KafkaConsumer
-from system.AudioStream import AudioStream
+from system.AudioController import AudioController
 
-audio_stream = AudioStream()
-audio_stream.start_stream()
+audio_controller = AudioController()
+audio_controller.start_stream()
 
 consumer = KafkaConsumer('Wagner')
 for msg in consumer:
   val = msg.value.decode()
-  audio_stream.on_signal_input(val)
+  audio_controller.on_signal_input(val)
   print('[SignalConsumer] Signal -', val)
