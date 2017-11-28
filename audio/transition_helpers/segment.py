@@ -1,10 +1,10 @@
 '''
 Returns two transition segments by performing the following
 1. Cut songs at specific time points
-  Out song: mix_out -> mix_out + mix_len
-  In song: mix_in -> mix_in + mix_len
+   Out song: mix_out -> mix_out + mix_len
+   In song: mix_in -> mix_in + mix_len
 2. Perform mutation if necessary
-  Time stretching if songs have different BPMs
+   Time stretching if songs have different BPMs
 3. Write raw audio files to temp folder
 4. Return path for transition segments
 '''
@@ -40,6 +40,7 @@ def stretch(song_out, song_in, mix_len, sr):
 
   return (out_path, in_path)
 
+# TODO: time stretch functionality could be implemented in librosa
 def _stretched_audio_by_incre_bpm(song, beats, incre_bpm, sr):
   samples = np.array([]).reshape(2,0)
   for i in range(len(beats)-1):
