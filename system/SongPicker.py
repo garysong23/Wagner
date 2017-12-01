@@ -13,7 +13,6 @@ DATA_SET = './data/json/' + name + '.json'
 class SongPicker:
   def __init__(self):
     self._all_songs = self._load_songs()
-    print(self._all_songs)
     self._cur_song = None
 
   def pick_song(self, sig_action):
