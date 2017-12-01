@@ -45,6 +45,8 @@ class AudioController:
   def on_signal_input(self, msg):
     if (msg.isdigit()):
       self._signal_processor.on_signal(msg)
+    elif (msg == 'start'):
+      self.start_stream()
     elif (msg == 'restart'):
       self.stop_stream()
       self.start_stream()
