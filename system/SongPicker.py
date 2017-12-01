@@ -18,6 +18,7 @@ class SongPicker:
   def pick_song(self, sig_action):
     if not self._cur_song:
       # TODO: choose inital song from prexisting signals
+      # TODO: setup first song intro process
       chosen_song = self._all_songs[128][0]
     else:
       chosen_song = self._find_song_for_action(sig_action)
@@ -47,11 +48,13 @@ class SongPicker:
     all_bpms = sorted(self._all_songs.keys())
 
     if sig_action == SIG_ACTIONS['increase']:
-      if cur_bpm == max(all_bpms): print('[SongPicker] - BPM at max:', cur_bpm)
+      if cur_bpm == max(all_bpms):
+        print('[SongPicker] - BPM at max:', cur_bpm)
       new_bpm_index = min(all_bpms.index(cur_bpm)+1, len(all_bpms)-1)
       new_bpm = all_bpms[new_bpm_index]
     elif sig_action == SIG_ACTIONS['decrease']:
-      if cur_bpm == min(all_bpms): print('[SongPicker] - BPM at min:', cur_bpm)
+      if cur_bpm == min(all_bpms):
+        print('[SongPicker] - BPM at min:', cur_bpm)
       new_bpm_index = max(0, all_bpms.index(cur_bpm)-1)
       new_bpm = all_bpms[new_bpm_index]
     elif sig_action == SIG_ACTIONS['maintain']:
@@ -63,4 +66,4 @@ class SongPicker:
 
   def _retrieve_raw_audio(self, song):
     # TODO: stitch songs
-    return song._raw_audio_mono[:10*SR]
+    return song.body_audio()

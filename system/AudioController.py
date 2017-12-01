@@ -10,7 +10,7 @@ NEXT_SONG_PROCESSING_TIME = 5
 
 class AudioController:
   def __init__(self):
-    self._audio_stream_data = np.array([], dtype='float32')
+    self._audio_stream_data = np.array([], dtype='float32').reshape(2,0)
 
     self._signal_processor = SignalProcessor()
     self._song_picker = SongPicker()
@@ -29,9 +29,12 @@ class AudioController:
       self._add_new_song()
 
     self._print_stream_status(frame_count)
-    data = self._audio_stream_data[:frame_count]
-    self._audio_stream_data = self._audio_stream_data[frame_count:]
-    return data
+    data = self._audio_stream_data[:, :frame_count]
+    self._audio_stream_data = self._audio_stream_data[:, frame_count:]
+
+    # convert two channel data to format accepted for pyaudio
+    waved_data = np.vstack((data[0],data[1])).reshape((-1,),order='F')
+    return waved_data
 
   def _add_new_song(self):
     if self._new_song_processing_flag: return
@@ -39,7 +42,8 @@ class AudioController:
 
     sig_action = self._signal_processor.interpret_signals()
     audio = self._song_picker.pick_song(sig_action)
-    self._audio_stream_data = np.concatenate([self._audio_stream_data, audio])
+
+    self._audio_stream_data = np.concatenate([self._audio_stream_data, audio], axis=1)
 
     self._new_song_processing_flag = False
 

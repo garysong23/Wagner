@@ -12,7 +12,7 @@ class AudioStream:
     print('[AudioStream] - Start stream')
     self._stream = pyaudio.PyAudio().open(
       format=pyaudio.paFloat32,
-      channels=1,
+      channels=2,
       rate=SR,
       output=True,
       stream_callback=self._stream_callback,
