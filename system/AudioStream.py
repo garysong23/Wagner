@@ -16,10 +16,6 @@ class AudioStream:
       stream_callback=self._stream_callback,
     )
 
-  def _stream_callback(self, in_data, frame_count, time_info, status):
-    data = self._on_stream_callback(frame_count)
-    return (data, pyaudio.paContinue)
-
   def start_stream(self):
     def background():
       print('[AudioStream] - Starting Stream')
@@ -36,3 +32,7 @@ class AudioStream:
     self._stream.stop_stream()
     self._stream.close()
     self._pyaudio.terminate()
+
+  def _stream_callback(self, in_data, frame_count, time_info, status):
+    data = self._on_stream_callback(frame_count)
+    return (data, pyaudio.paContinue)

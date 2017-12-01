@@ -22,7 +22,7 @@ class Mix:
     s1 = songs[0]
     # builds first song
     mix_full = np.concatenate([s1.trans_in_audio(), s1.body_audio()], axis=1)
-    for i in range(0, len(songs)-1):
+    for i in range(len(songs)-1):
       out_song, in_song = songs[i], songs[i+1]
       transition = Transition(out_song, in_song, mix_len)
       trans_audio = transition.merged_audio

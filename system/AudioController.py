@@ -2,30 +2,51 @@ import librosa
 import numpy as np
 
 from system.AudioStream import AudioStream
+from system.SignalProcessor import SignalProcessor
+from system.SongPicker import SongPicker
 
 SR = 44100
 
+NEXT_SONG_PROCESSING_TIME = 5
+
 class AudioController:
   def __init__(self):
-    self._stream_data = np.array([], dtype='float32')
-    self.append_streaming_audio('in')
+    self._audio_stream_data = np.array([], dtype='float32')
+
+    self._song_picker = SongPicker()
+    self._processing_new_song = False
+    self._signal_processor = SignalProcessor()
+
+    self._add_new_song()
     self._audio_stream = AudioStream(self._on_stream_callback)
 
+
   def _on_stream_callback(self, frame_count):
-    data = self._stream_data[:frame_count]
-    self._stream_data = self._stream_data[frame_count:]
+    if (frame_count > self._audio_stream_data.size):
+      print('[AudioController] - Stream data depleted.')
+
+    time_remain = round(self._audio_stream_data.size/SR, 2)
+    if time_remain < NEXT_SONG_PROCESSING_TIME:
+      self._add_new_song()
+
+    self._print_stream_status(frame_count)
+    data = self._audio_stream_data[:frame_count]
+    self._audio_stream_data = self._audio_stream_data[frame_count:]
     return data
 
-  def append_streaming_audio(self, audio_name):
-    file_path = './data/wav/'+audio_name+'.wav'
-    raw_audio, _ = librosa.load(file_path, sr=SR, mono=True)
-    self._stream_data = np.concatenate([self._stream_data, raw_audio])
+  def _add_new_song(self):
+    if self._processing_new_song: return
+    self._processing_new_song = True
+    audio = self._song_picker.pick_song()
+    self._audio_stream_data = np.concatenate([self._audio_stream_data, audio])
+    self._processing_new_song = False
 
   def on_signal_input(self, msg):
-    if (msg == '1'):
-      self._audio_buffer = self.append_streaming_audio('in')
-    if (msg == '2'):
-      self._audio_buffer = self.append_streaming_audio('out')
+    if (msg.isdigit()):
+      self._signal_processor.on_signal(msg)
+    elif (msg == 'restart'):
+      self.stop_stream()
+      self.start_stream()
     elif (msg == 'stop') or (msg == 'exit'):
       print("Terminating: I'll be back")
       self.stop_stream()
@@ -35,3 +56,7 @@ class AudioController:
 
   def start_stream(self): self._audio_stream.start_stream()
   def stop_stream(self): self._audio_stream.stop_stream()
+
+  def _print_stream_status(self, frame_count):
+    secs = round(self._audio_stream_data.size/SR, 2)
+    print('[AudioController] - Time remaining: {0}'.format(secs))
