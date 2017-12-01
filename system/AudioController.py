@@ -6,20 +6,18 @@ from system.SignalProcessor import SignalProcessor
 from system.SongPicker import SongPicker
 
 SR = 44100
-
 NEXT_SONG_PROCESSING_TIME = 5
 
 class AudioController:
   def __init__(self):
     self._audio_stream_data = np.array([], dtype='float32')
 
-    self._song_picker = SongPicker()
-    self._processing_new_song = False
     self._signal_processor = SignalProcessor()
+    self._song_picker = SongPicker()
+    self._new_song_processing_flag = False
 
     self._add_new_song()
     self._audio_stream = AudioStream(self._on_stream_callback)
-
 
   def _on_stream_callback(self, frame_count):
     if (frame_count > self._audio_stream_data.size):
@@ -35,11 +33,14 @@ class AudioController:
     return data
 
   def _add_new_song(self):
-    if self._processing_new_song: return
-    self._processing_new_song = True
-    audio = self._song_picker.pick_song()
+    if self._new_song_processing_flag: return
+    self._new_song_processing_flag = True
+
+    sig_action = self._signal_processor.interpret_signals()
+    audio = self._song_picker.pick_song(sig_action)
     self._audio_stream_data = np.concatenate([self._audio_stream_data, audio])
-    self._processing_new_song = False
+
+    self._new_song_processing_flag = False
 
   def on_signal_input(self, msg):
     if (msg.isdigit()):
